@@ -15,7 +15,7 @@ import (
 
 var (
 	mtx        sync.RWMutex
-	members    = flag.String("members", "", "comma seperated list of members")
+	members    = flag.String("members", "", "comma separated list of members")
 	port       = flag.Int("port", 4001, "http port")
 	items      = map[string]string{}
 	broadcasts *memberlist.TransmitLimitedQueue
