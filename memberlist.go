@@ -16,7 +16,8 @@ import (
 var (
 	mtx        sync.RWMutex
 	members    = flag.String("members", "", "comma separated list of members")
-	port       = flag.Int("port", 4001, "http port")
+	lp         = flag.Int("listen_port", 4001, "http port")
+	bp         = flag.Int("bind_port", 50001, "http port")
 	items      = map[string]string{}
 	broadcasts *memberlist.TransmitLimitedQueue
 )
@@ -192,7 +193,7 @@ func start() error {
 	c := memberlist.DefaultLocalConfig()
 	c.Events = &eventDelegate{}
 	c.Delegate = &delegate{}
-	c.BindPort = 0
+	c.BindPort = *bp
 	c.Name = hostname + "-" + uuid.NewUUID().String()
 	m, err := memberlist.Create(c)
 	if err != nil {
@@ -224,8 +225,8 @@ func main() {
 	http.HandleFunc("/add", addHandler)
 	http.HandleFunc("/del", delHandler)
 	http.HandleFunc("/get", getHandler)
-	fmt.Printf("Listening on :%d\n", *port)
-	if err := http.ListenAndServe(fmt.Sprintf(":%d", *port), nil); err != nil {
+	fmt.Printf("Listening on :%d\n", *lp)
+	if err := http.ListenAndServe(fmt.Sprintf(":%d", *lp), nil); err != nil {
 		fmt.Println(err)
 	}
 }

@@ -1,5 +1,7 @@
-FROM golang:1.13 AS builder
-ENV GO111MODULE=on
+FROM golang:1.13.8-alpine3.10 AS builder
+ENV GO111MODULE=on \
+	GOPROXY=https://goproxy.cn \
+	GOFLAGS='-mod=vendor'
 WORKDIR /go/src/app
 COPY . .
 

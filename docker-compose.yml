@@ -4,5 +4,33 @@ services:
   m1:
     container_name: m1
     image: kaynwong/memberlist:v1.0
+    hostname: m1
+    ports:
+      - "50001:50001"
+      - "4001:4001"
+
+  m2:
+    container_name: m2
+    image: kaynwong/memberlist:v1.0
+    hostname: m2
+    ports:
+      - "50002:50002"
+      - "4002:4002"
     command:
-      - ""
+      - "-members=m1:50001"
+      - "-listen_port=4002"
+      - "-bind_port=50002"
+
+  m3:
+    container_name: m3
+    image: kaynwong/memberlist:v1.0
+    hostname: m3
+    ports:
+      - "50003:50003"
+      - "4003:4003"
+    command:
+      - "-members=m2:50002"
+      - "-listen_port=4003"
+      - "-bind_port=50003"
+
+
